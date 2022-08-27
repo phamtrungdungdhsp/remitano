@@ -1,5 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
+import { UserEntity } from '~users/entities/user.entity';
 import { UserService } from '~users/services/user.service';
 import { SignUpDto } from '../dtos/sign-up.dto';
 
@@ -12,7 +13,7 @@ export class UserController {
   })
   @Post('sign-up')
   @HttpCode(HttpStatus.CREATED)
-  signUp(@Body() userDto: SignUpDto): Promise<void> {
+  signUp(@Body() userDto: SignUpDto): Promise<UserEntity> {
     return this.userService.signUp(userDto);
   }
 }

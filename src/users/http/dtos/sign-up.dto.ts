@@ -7,7 +7,7 @@ import {
   MinLength,
 } from 'class-validator';
 import { faker } from '@faker-js/faker';
-const passwordRegex = RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/g);
+const passwordRegex = RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/);
 
 export class SignUpDto {
   @ApiProperty({

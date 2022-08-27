@@ -1,4 +1,3 @@
-import { randomUUID } from 'crypto';
 import { DataSource } from 'typeorm';
 import { env, isTest } from './env.config';
 
@@ -8,11 +7,7 @@ export const config = {
   port: env.DATABASE.PORT,
   username: env.DATABASE.USER,
   password: env.DATABASE.PASSWORD,
-  database:
-    env.DATABASE.NAME +
-    (isTest
-      ? `_${randomUUID({ disableEntropyCache: true }).replace(/-/g, '')}`
-      : ''),
+  database: env.DATABASE.NAME + (isTest ? `_testing` : ''),
   entities: [`${env.ROOT_PATH}/**/*.entity.${isTest ? 'ts' : 'js'}`],
   synchronize: true,
   migrations: [
