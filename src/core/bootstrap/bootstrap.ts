@@ -1,6 +1,7 @@
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { json } from 'express';
 import path from 'path';
 import { AppModule } from '~app.module';
@@ -57,6 +58,16 @@ export class Bootstrap {
     this.app.useStaticAssets(path.join(env.ROOT_PATH, 'static'), {
       prefix: `/${env.APP_PREFIX}`,
     });
+  }
+
+  buildSwagger() {
+    const config = new DocumentBuilder()
+      .setTitle('The Remitano Challange')
+      .setDescription('The Demo API description')
+      .setVersion('1.0')
+      .build();
+    const document = SwaggerModule.createDocument(this.app, config);
+    SwaggerModule.setup('documents', this.app, document);
   }
 
   initJsonBodyLimit() {

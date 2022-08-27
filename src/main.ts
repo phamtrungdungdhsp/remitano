@@ -11,6 +11,7 @@ async function startApp() {
   bootstrap.initCors();
   bootstrap.initStaticAsset();
   bootstrap.initJsonBodyLimit();
+  bootstrap.buildSwagger();
   await bootstrap.start();
   await bootstrap.enableHotReload();
 }
