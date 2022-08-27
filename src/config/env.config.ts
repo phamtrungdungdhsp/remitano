@@ -28,6 +28,10 @@ export const env = {
     PASSWORD: process.env.DATABASE_PASSWORD,
     NAME: process.env.DATABASE_NAME,
   },
+  REDIS: {
+    HOST: process.env.REDIS_HOST || 'localhost',
+    PORT: process.env.REDIS_PORT || 6379,
+  },
   THROTTLE: {
     TTL: Number(process.env.THROTTLE_TTL || 60),
     LIMIT: Number(process.env.THROTTLE_LIMIT || 60),
