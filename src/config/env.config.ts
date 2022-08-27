@@ -18,6 +18,7 @@ export const env = {
   APP_PREFIX: process.env.APP_PREFIX || 'api',
   WHITELIST_DOMAINS: process.env.WHITELIST_DOMAINS.split(','),
   JSON_BODY_LIMIT: '1mb',
+  JWT_SECRET: process.env.JWT_SECRET,
   DATABASE: {
     DRIVER: process.env.DATABASE_DRIVER,
     CONNECT: process.env.DATABASE_CONNECT as any,
