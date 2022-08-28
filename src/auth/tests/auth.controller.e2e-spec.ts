@@ -4,26 +4,26 @@ import { errorCode } from '~core/errors/error-code.error';
 import { TestHelper } from '~core/tests/test.helper';
 import { UserEntity } from '~users/entities/user.entity';
 import { UserStatus } from '~users/enums/user-status.enum';
-import { UserTestHelper } from './user-test.helper';
+import { AuthTestHelper } from './auth-test.helper';
 
-describe('UserController (e2e)', () => {
+describe('AuthController (e2e)', () => {
   const testHelper = new TestHelper();
-  let userTestHelper: UserTestHelper;
+  let userTestHelper: AuthTestHelper;
 
   beforeAll(async () => {
     await testHelper.initialize();
-    userTestHelper = testHelper.getTestHelperModule(UserTestHelper);
+    userTestHelper = testHelper.getTestHelperModule(AuthTestHelper);
   });
 
   afterAll(async () => {
     await testHelper.close();
   });
 
-  describe('POST /users/sign-up', () => {
+  describe('POST /auth/sign-up', () => {
     it('should return 422 error if the input is invalid', async () => {
       const payload = userTestHelper.createBody();
       await testHelper
-        .post('/users/sign-up')
+        .post('/auth/sign-up')
         .send({
           ...payload,
           password: '123',
@@ -34,7 +34,7 @@ describe('UserController (e2e)', () => {
     it('should sign up successfully', async () => {
       const payload = userTestHelper.createBody();
       const { body } = await testHelper
-        .post('/users/sign-up')
+        .post('/auth/sign-up')
         .send(payload)
         .isCreated();
       expect(body.firstName).toEqual(payload.firstName);
@@ -48,7 +48,7 @@ describe('UserController (e2e)', () => {
       const user = await userTestHelper.createOne();
       const payload = userTestHelper.createBody();
       const { body } = await testHelper
-        .post('/users/sign-up')
+        .post('/auth/sign-up')
         .send({
           ...payload,
           email: user.email,
@@ -58,7 +58,7 @@ describe('UserController (e2e)', () => {
     });
   });
 
-  describe('POST /users/sign-in', () => {
+  describe('POST /auth/sign-in', () => {
     let testUser: UserEntity;
     beforeAll(async () => {
       testUser = await userTestHelper.createOne();
@@ -66,7 +66,7 @@ describe('UserController (e2e)', () => {
 
     it('should return 400 if provding non-exist email', async () => {
       const { body } = await testHelper
-        .post('/users/sign-in')
+        .post('/auth/sign-in')
         .send({
           email: faker.internet.email(),
           password: 'validpass2',
@@ -77,7 +77,7 @@ describe('UserController (e2e)', () => {
 
     it('should return 400 if providing wrong password', async () => {
       const { body } = await testHelper
-        .post('/users/sign-in')
+        .post('/auth/sign-in')
         .send({
           email: testUser.email,
           password: 'validpass2',
@@ -88,7 +88,7 @@ describe('UserController (e2e)', () => {
 
     it('should sign-in successfully', async () => {
       const { body } = await testHelper
-        .post('/users/sign-in')
+        .post('/auth/sign-in')
         .send({
           email: testUser.email,
           password: 'validpass1',
