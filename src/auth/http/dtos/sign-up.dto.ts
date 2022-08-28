@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Matches,
   MinLength,
@@ -16,7 +17,7 @@ export class SignUpDto {
     example: faker.name.firstName(),
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @MinLength(2)
   firstName: string;
 
@@ -26,7 +27,7 @@ export class SignUpDto {
     example: faker.name.lastName(),
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @MinLength(2)
   lastName: string;
 

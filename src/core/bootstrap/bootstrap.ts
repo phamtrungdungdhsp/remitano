@@ -65,6 +65,7 @@ export class Bootstrap {
       .setTitle('The Remitano Challange')
       .setDescription('The Demo API description')
       .setVersion('1.0')
+      .addBearerAuth()
       .build();
     const document = SwaggerModule.createDocument(this.app, config);
     SwaggerModule.setup('documents', this.app, document);

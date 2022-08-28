@@ -15,11 +15,17 @@ import { VideoEntity } from '~videos/entities/video.entity';
 @Injectable()
 export class YoutubeAdapter implements VideoInterface {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
-  async getFullInformationOfVideo(url: string): Promise<VideoInforInterface> {
+
+  async getFullInformationOfVideo(
+    url: string,
+  ): Promise<
+    Pick<VideoInforInterface, 'url' | 'title' | 'description' | 'iframeUrl'>
+  > {
     try {
       const { videoDetails } = await ytdl.getBasicInfo(url);
       return {
         url,
+        iframeUrl: videoDetails.embed.iframeUrl,
         title: videoDetails.title,
         description: videoDetails.description,
       };
@@ -37,10 +43,13 @@ export class YoutubeAdapter implements VideoInterface {
     });
   }
 
-  async getVideosInfo(videos: VideoEntity[]): Promise<VideoEntity[]> {
-    const result: VideoEntity[] = [];
+  async getVideosInfo(videos: VideoEntity[]): Promise<VideoInforInterface[]> {
+    const result: VideoInforInterface[] = [];
     for (const video of videos) {
-      let target: VideoInforInterface;
+      let target: Pick<
+        VideoInforInterface,
+        'url' | 'title' | 'description' | 'iframeUrl'
+      >;
       const cacheData: string = await this.cacheManager.get(
         `${VIDEO_ID}_${video.id}`,
       );
@@ -49,9 +58,18 @@ export class YoutubeAdapter implements VideoInterface {
       } else {
         target = await this.getFullInformationOfVideo(video.url);
       }
-      video.title = target.title;
-      video.description = target.description;
-      result.push(video);
+      const payload: VideoInforInterface = {
+        id: video.id,
+        title: target.title,
+        description: target.description,
+        url: video.url,
+        iframeUrl: target.iframeUrl,
+        userEmail: video.user.email,
+        userId: video.userId,
+        createdAt: video.createdAt,
+      };
+      result.push(payload);
+      await this.cacheVideoInfo(video.id, payload);
     }
     return result;
   }

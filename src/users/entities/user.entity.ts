@@ -4,10 +4,10 @@ import { UserStatus } from '~users/enums/user-status.enum';
 
 @Entity('users')
 export class UserEntity extends BaseEntity {
-  @Column()
+  @Column({ nullable: true })
   firstName: string;
 
-  @Column()
+  @Column({ nullable: true })
   lastName: string;
 
   @Column({ select: false })

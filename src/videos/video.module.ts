@@ -6,11 +6,12 @@ import { UserModule } from '~users/user.module';
 import { VideoEntity } from './entities/video.entity';
 import { VideoController } from './http/controllers/video.controller';
 import { VideoRepository } from './repositories/video.repository';
+import { YoutubeAdapter } from './services/adapters/youtube.adapter';
 import { VideoService } from './services/video.service';
 
 @Module({
   controllers: [VideoController],
-  providers: [VideoService],
+  providers: [VideoService, YoutubeAdapter],
   exports: [],
   imports: [
     cacheConfig,
