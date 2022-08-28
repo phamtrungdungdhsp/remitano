@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { CurrentUser } from '~auth/decorators/current-user.decorator';
 import { AuthGuard } from '~auth/http/guards/auth.guard';
@@ -16,6 +16,7 @@ export class VideoController {
   @UseGuards(AuthGuard)
   @ApiBearerAuth('token')
   @Post()
+  @HttpCode(HttpStatus.OK)
   shareVideo(@CurrentUser() user: UserEntity, @Body() videoDto: ShareVideoDto) {
     return this.videoService.shareVideo(user.id, videoDto.url);
   }
