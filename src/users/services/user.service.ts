@@ -14,6 +14,10 @@ export class UserService {
     return this.userRepo.findOne({ where: { email } });
   }
 
+  findById(id: string) {
+    return this.userRepo.findOne({ where: { id } });
+  }
+
   findOneWithPassword(
     condition: FindOneOptions<UserEntity>,
   ): Promise<UserEntity | null> {

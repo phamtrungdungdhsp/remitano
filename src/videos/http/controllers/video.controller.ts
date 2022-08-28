@@ -1,5 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { CurrentUser } from '~auth/decorators/current-user.decorator';
+import { AuthGuard } from '~auth/http/guards/auth.guard';
+import { UserEntity } from '~users/entities/user.entity';
 import { VideoService } from '~videos/services/video.service';
 import { ShareVideoDto } from '../dtos/share-video.dto';
 
@@ -10,8 +13,10 @@ export class VideoController {
   @ApiOperation({
     description: 'Share a video',
   })
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth('token')
   @Post()
-  shareVideo(@Body() videoDto: ShareVideoDto) {
-    return this.videoService.shareVideo('a', videoDto.url);
+  shareVideo(@CurrentUser() user: UserEntity, @Body() videoDto: ShareVideoDto) {
+    return this.videoService.shareVideo(user.id, videoDto.url);
   }
 }
