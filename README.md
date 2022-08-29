@@ -48,3 +48,13 @@ $ yarn start:dev
 # production mode
 $ yarn start:prod
 ```
+## Testing
+- Create database name that combine the database name plus `_testing` (For example, if your main datbase in env is `remitano` => `remitano_testing`)
+
+```bash
+# e2e test
+$ yarn test:e2e /source...
+
+# unit test
+$ yarn test:unit /source...
+```
